@@ -1,13 +1,13 @@
 package farmacia.model;
 
-public class ItemVenda {
+public class Itemvenda {
 
     private String id;
     private Medicamento medicamento;
     private int quantidade;
     private double precoUnitario;
 
-    public ItemVenda(String id, Medicamento medicamento, int quantidade) {
+    public Itemvenda(String id, Medicamento medicamento, int quantidade) {
         this.id = id;
         this.medicamento = medicamento;
         this.quantidade = quantidade;

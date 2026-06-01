@@ -10,7 +10,7 @@ public class Venda {
     private LocalDateTime dataHora;
     private Funcionario funcionario;
     private Cliente cliente;
-    private List<ItemVenda> itens;
+    private List<Itemvenda> itens;
 
     public Venda(String id, Funcionario funcionario, Cliente cliente) {
         this.id = id;
@@ -24,15 +24,15 @@ public class Venda {
     public LocalDateTime getDataHora() { return dataHora; }
     public Funcionario getFuncionario() { return funcionario; }
     public Cliente getCliente() { return cliente; }
-    public List<ItemVenda> getItens() { return itens; }
+    public List<Itemvenda> getItens() { return itens; }
 
-    public void adicionarItem(ItemVenda item) {
+    public void adicionarItem(Itemvenda item) {
         itens.add(item);
     }
 
     public double calcularTotal() {
         return itens.stream()
-                .mapToDouble(ItemVenda::getSubtotal)
+                .mapToDouble(Itemvenda::getSubtotal)
                 .sum();
     }
 

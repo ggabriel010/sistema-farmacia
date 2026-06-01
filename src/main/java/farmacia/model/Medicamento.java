@@ -1,6 +1,7 @@
 package farmacia.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class Medicamento {
 
@@ -10,14 +11,18 @@ public class Medicamento {
     private double preco;
     private int quantidadeEstoque;
     private int quantidadeMinima;
-    private LocalDate dataValidade;
+    private String dataValidade;   // formato ISO: "2025-12-31"
     private boolean ativo;
     private Categoria categoria;
     private Fornecedor fornecedor;
 
+    public Medicamento() {
+        this.ativo = true;
+    }
+
     public Medicamento(String id, String nome, String descricao, double preco,
                        int quantidadeEstoque, int quantidadeMinima,
-                       LocalDate dataValidade, Categoria categoria, Fornecedor fornecedor) {
+                       String dataValidade, Categoria categoria, Fornecedor fornecedor) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -36,17 +41,18 @@ public class Medicamento {
     public double getPreco() { return preco; }
     public int getQuantidadeEstoque() { return quantidadeEstoque; }
     public int getQuantidadeMinima() { return quantidadeMinima; }
-    public LocalDate getDataValidade() { return dataValidade; }
+    public String getDataValidade() { return dataValidade; }
     public boolean isAtivo() { return ativo; }
     public Categoria getCategoria() { return categoria; }
     public Fornecedor getFornecedor() { return fornecedor; }
 
+    public void setId(String id) { this.id = id; }
     public void setNome(String nome) { this.nome = nome; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
     public void setPreco(double preco) { this.preco = preco; }
     public void setQuantidadeEstoque(int quantidadeEstoque) { this.quantidadeEstoque = quantidadeEstoque; }
     public void setQuantidadeMinima(int quantidadeMinima) { this.quantidadeMinima = quantidadeMinima; }
-    public void setDataValidade(LocalDate dataValidade) { this.dataValidade = dataValidade; }
+    public void setDataValidade(String dataValidade) { this.dataValidade = dataValidade; }
     public void setAtivo(boolean ativo) { this.ativo = ativo; }
     public void setCategoria(Categoria categoria) { this.categoria = categoria; }
     public void setFornecedor(Fornecedor fornecedor) { this.fornecedor = fornecedor; }
@@ -59,8 +65,19 @@ public class Medicamento {
         return quantidadeEstoque < quantidadeMinima;
     }
 
+    /**
+     * Retorna true se a validade for igual ou inferior a 30 dias a partir de hoje.
+     * Converte a data armazenada como String (ISO) para LocalDate internamente.
+     * Se a data for inválida ou nula, retorna false.
+     */
     public boolean isValidadeProxima() {
-        return !dataValidade.isAfter(LocalDate.now().plusDays(30));
+        if (dataValidade == null || dataValidade.isBlank()) return false;
+        try {
+            LocalDate validade = LocalDate.parse(dataValidade.trim());
+            return !validade.isAfter(LocalDate.now().plusDays(30));
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
     @Override

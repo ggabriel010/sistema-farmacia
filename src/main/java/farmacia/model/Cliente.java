@@ -8,6 +8,9 @@ public class Cliente {
     private String telefone;
     private String email;
 
+    public Cliente() {
+    }
+
     public Cliente(String id, String nome, String cpf, String telefone, String email) {
         this.id = id;
         this.nome = nome;
@@ -22,6 +25,7 @@ public class Cliente {
     public String getTelefone() { return telefone; }
     public String getEmail() { return email; }
 
+    public void setId(String id) { this.id = id; }
     public void setNome(String nome) { this.nome = nome; }
     public void setCpf(String cpf) { this.cpf = cpf; }
     public void setTelefone(String telefone) { this.telefone = telefone; }

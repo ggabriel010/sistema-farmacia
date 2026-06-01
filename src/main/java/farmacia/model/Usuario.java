@@ -7,6 +7,9 @@ public abstract class Usuario {
     private String login;
     private String senha;
 
+    public Usuario() {
+    }
+
     public Usuario(String id, String nome, String login, String senha) {
         this.id = id;
         this.nome = nome;
@@ -19,6 +22,7 @@ public abstract class Usuario {
     public String getLogin() { return login; }
     public String getSenha() { return senha; }
 
+    public void setId(String id) { this.id = id; }
     public void setNome(String nome) { this.nome = nome; }
     public void setLogin(String login) { this.login = login; }
     public void setSenha(String senha) { this.senha = senha; }

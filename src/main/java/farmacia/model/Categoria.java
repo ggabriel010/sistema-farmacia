@@ -6,6 +6,9 @@ public class Categoria {
     private String nome;
     private String descricao;
 
+    public Categoria() {
+    }
+
     public Categoria(String id, String nome, String descricao) {
         this.id = id;
         this.nome = nome;
@@ -16,6 +19,7 @@ public class Categoria {
     public String getNome() { return nome; }
     public String getDescricao() { return descricao; }
 
+    public void setId(String id) { this.id = id; }
     public void setNome(String nome) { this.nome = nome; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
 

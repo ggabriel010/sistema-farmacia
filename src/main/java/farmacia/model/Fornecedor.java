@@ -8,6 +8,9 @@ public class Fornecedor {
     private String telefone;
     private String email;
 
+    public Fornecedor() {
+    }
+
     public Fornecedor(String id, String nome, String cnpj, String telefone, String email) {
         this.id = id;
         this.nome = nome;
@@ -22,6 +25,7 @@ public class Fornecedor {
     public String getTelefone() { return telefone; }
     public String getEmail() { return email; }
 
+    public void setId(String id) { this.id = id; }
     public void setNome(String nome) { this.nome = nome; }
     public void setCnpj(String cnpj) { this.cnpj = cnpj; }
     public void setTelefone(String telefone) { this.telefone = telefone; }

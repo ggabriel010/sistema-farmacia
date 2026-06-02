@@ -3,12 +3,8 @@ package farmacia.view;
 import farmacia.controller.CategoriaController;
 import farmacia.model.Administrador;
 import farmacia.model.Categoria;
-
 import java.util.List;
 
-/**
- * Telas de gerenciamento de categorias (somente Administrador).
- */
 public class CategoriaView {
 
     private final Administrador admin;

@@ -4,9 +4,6 @@ import farmacia.controller.ClienteController;
 import farmacia.controller.VendaController;
 import farmacia.model.Usuario;
 
-/**
- * Menu principal do Funcionário. Apenas registro de vendas.
- */
 public class MenuFuncionarioView {
 
     private final Usuario funcionario;

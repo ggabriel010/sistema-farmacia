@@ -3,13 +3,9 @@ package farmacia.controller;
 import farmacia.model.Administrador;
 import farmacia.model.Fornecedor;
 import farmacia.repository.FornecedorRepository;
-
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Controla as operações sobre fornecedores. Apenas Administrador.
- */
 public class FornecedorController {
 
     private final FornecedorRepository fornecedorRepository;

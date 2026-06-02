@@ -1,17 +1,9 @@
 package farmacia.view;
 
-/**
- * Tela de login do sistema.
- */
 public class LoginView {
 
     public LoginView() {}
 
-    /**
-     * Solicita login e senha ao usuário.
-     *
-     * @return array [login, senha]
-     */
     public String[] solicitarCredenciais() {
         Tela.cabecalho("SISTEMA DE GERENCIAMENTO DE FARMÁCIA — LOGIN");
         String login = Tela.lerLinhaObrigatoria("Login");
@@ -28,11 +20,6 @@ public class LoginView {
         Tela.pausar();
     }
 
-    /**
-     * Pergunta se o usuário deseja tentar novo login após logout.
-     *
-     * @return true se quiser, false para encerrar o sistema
-     */
     public boolean confirmarNovoLogin() {
         return Tela.confirmar("Deseja fazer login novamente?");
     }

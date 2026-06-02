@@ -10,9 +10,6 @@ import farmacia.service.VendaService.ItemVendaDto;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Controla o registro de vendas. Pode ser usado por Funcionário e Administrador.
- */
 public class VendaController {
 
     private final VendaService vendaService;

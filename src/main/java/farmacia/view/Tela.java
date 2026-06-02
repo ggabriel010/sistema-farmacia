@@ -2,10 +2,6 @@ package farmacia.view;
 
 import java.util.Scanner;
 
-/**
- * Utilitário compartilhado entre todas as Views.
- * Centraliza o Scanner e métodos de exibição padronizados.
- */
 public class Tela {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -50,9 +46,6 @@ public class Tela {
         return scanner.nextLine().trim();
     }
 
-    /**
-     * Lê uma linha obrigatória — repete até o usuário digitar algo.
-     */
     public static String lerLinhaObrigatoria(String prompt) {
         String valor;
         do {
@@ -62,9 +55,6 @@ public class Tela {
         return valor;
     }
 
-    /**
-     * Lê um inteiro; repete se inválido.
-     */
     public static int lerOpcao(int min, int max) {
         while (true) {
             String entrada = lerLinha("Opção [" + min + "-" + max + "]");
@@ -78,17 +68,11 @@ public class Tela {
         }
     }
 
-    /**
-     * Exibe mensagem e aguarda Enter para continuar.
-     */
     public static void pausar() {
         System.out.print("\n  Pressione Enter para continuar...");
         scanner.nextLine();
     }
 
-    /**
-     * Pergunta confirmação S/N.
-     */
     public static boolean confirmar(String pergunta) {
         while (true) {
             String resp = lerLinha(pergunta + " [S/N]").toUpperCase();

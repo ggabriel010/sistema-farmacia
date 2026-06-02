@@ -2,12 +2,8 @@ package farmacia.view;
 
 import farmacia.model.Medicamento;
 import farmacia.service.EstoqueService;
-
 import java.util.List;
 
-/**
- * Exibe alertas de estoque baixo e validade próxima ao iniciar o sistema.
- */
 public class AlertaView {
 
     private final EstoqueService estoqueService;
@@ -16,9 +12,6 @@ public class AlertaView {
         this.estoqueService = estoqueService;
     }
 
-    /**
-     * Verifica e exibe todos os alertas do sistema. Chamado pela Main antes do login.
-     */
     public void exibirAlertas() {
         List<Medicamento> estoqueBaixo  = estoqueService.listarEstoqueBaixo();
         List<Medicamento> validadeProxima = estoqueService.listarValidadeProxima();

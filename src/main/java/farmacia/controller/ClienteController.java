@@ -3,13 +3,9 @@ package farmacia.controller;
 import farmacia.model.Administrador;
 import farmacia.model.Cliente;
 import farmacia.repository.ClienteRepository;
-
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Controla as operações sobre clientes. Apenas Administrador pode cadastrar/editar/remover.
- */
 public class ClienteController {
 
     private final ClienteRepository clienteRepository;

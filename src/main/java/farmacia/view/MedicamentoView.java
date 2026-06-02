@@ -7,12 +7,8 @@ import farmacia.model.Administrador;
 import farmacia.model.Categoria;
 import farmacia.model.Fornecedor;
 import farmacia.model.Medicamento;
-
 import java.util.List;
 
-/**
- * Telas de gerenciamento de medicamentos (somente Administrador).
- */
 public class MedicamentoView {
 
     private final Administrador admin;
@@ -84,12 +80,13 @@ public class MedicamentoView {
     private void cadastrar() {
         Tela.cabecalho("CADASTRAR MEDICAMENTO");
 
-        String nome       = Tela.lerLinhaObrigatoria("Nome");
-        String descricao  = Tela.lerLinhaObrigatoria("Descrição");
-        String preco      = Tela.lerLinhaObrigatoria("Preço (ex: 12.50)");
-        String qtdEstoque = Tela.lerLinhaObrigatoria("Quantidade em estoque");
-        String qtdMinima  = Tela.lerLinhaObrigatoria("Quantidade mínima");
-        String validade   = Tela.lerLinhaObrigatoria("Data de validade (yyyy-MM-dd)");
+        String nome           = Tela.lerLinhaObrigatoria("Nome");
+        String descricao      = Tela.lerLinhaObrigatoria("Descrição");
+        String principioAtivo = Tela.lerLinhaObrigatoria("Princípio ativo");
+        String preco          = Tela.lerLinhaObrigatoria("Preço (ex: 12.50)");
+        String qtdEstoque     = Tela.lerLinhaObrigatoria("Quantidade em estoque");
+        String qtdMinima      = Tela.lerLinhaObrigatoria("Quantidade mínima");
+        String validade       = Tela.lerLinhaObrigatoria("Data de validade (yyyy-MM-dd)");
 
         String categoriaId  = selecionarCategoria();
         if (categoriaId == null) return;
@@ -98,8 +95,8 @@ public class MedicamentoView {
         if (fornecedorId == null) return;
 
         try {
-            medicamentoController.cadastrar(admin, nome, descricao, preco,
-                    qtdEstoque, qtdMinima, validade, categoriaId, fornecedorId);
+            medicamentoController.cadastrar(admin, nome, descricao, principioAtivo,
+                    preco, qtdEstoque, qtdMinima, validade, categoriaId, fornecedorId);
             Tela.sucesso("Medicamento cadastrado com sucesso!");
         } catch (IllegalArgumentException | IllegalStateException e) {
             Tela.erro(e.getMessage());
@@ -122,19 +119,19 @@ public class MedicamentoView {
         exibirDetalhe(med);
         System.out.println("\n  Deixe em branco para manter o valor atual.");
 
-        String nome       = Tela.lerLinha("Nome [" + med.getNome() + "]");
-        String descricao  = Tela.lerLinha("Descrição [" + med.getDescricao() + "]");
-        String preco      = Tela.lerLinha("Preço [" + med.getPreco() + "]");
-        String qtdEstoque = Tela.lerLinha("Qtd. estoque [" + med.getQuantidadeEstoque() + "]");
-        String qtdMinima  = Tela.lerLinha("Qtd. mínima [" + med.getQuantidadeMinima() + "]");
-        String validade   = Tela.lerLinha("Validade [" + med.getDataValidade() + "]");
-
-        String categoriaId  = Tela.lerLinha("ID Categoria [" + (med.getCategoria() != null ? med.getCategoria().getId() : "—") + "]");
-        String fornecedorId = Tela.lerLinha("ID Fornecedor [" + (med.getFornecedor() != null ? med.getFornecedor().getId() : "—") + "]");
+        String nome           = Tela.lerLinha("Nome [" + med.getNome() + "]");
+        String descricao      = Tela.lerLinha("Descrição [" + med.getDescricao() + "]");
+        String principioAtivo = Tela.lerLinha("Princípio ativo [" + med.getPrincipioAtivo() + "]");
+        String preco          = Tela.lerLinha("Preço [" + med.getPreco() + "]");
+        String qtdEstoque     = Tela.lerLinha("Qtd. estoque [" + med.getQuantidadeEstoque() + "]");
+        String qtdMinima      = Tela.lerLinha("Qtd. mínima [" + med.getQuantidadeMinima() + "]");
+        String validade       = Tela.lerLinha("Validade [" + med.getDataValidade() + "]");
+        String categoriaId    = Tela.lerLinha("ID Categoria [" + (med.getCategoria() != null ? med.getCategoria().getId() : "—") + "]");
+        String fornecedorId   = Tela.lerLinha("ID Fornecedor [" + (med.getFornecedor() != null ? med.getFornecedor().getId() : "—") + "]");
 
         try {
-            medicamentoController.editar(admin, id, nome, descricao, preco,
-                    qtdEstoque, qtdMinima, validade, categoriaId, fornecedorId);
+            medicamentoController.editar(admin, id, nome, descricao, principioAtivo,
+                    preco, qtdEstoque, qtdMinima, validade, categoriaId, fornecedorId);
             Tela.sucesso("Medicamento atualizado com sucesso!");
         } catch (IllegalArgumentException e) {
             Tela.erro(e.getMessage());
@@ -168,8 +165,6 @@ public class MedicamentoView {
         }
         Tela.pausar();
     }
-
-    // ---- auxiliares ----
 
     private String selecionarCategoria() {
         List<Categoria> categorias = categoriaController.listarTodos();
@@ -212,14 +207,15 @@ public class MedicamentoView {
     }
 
     private void exibirDetalhe(Medicamento m) {
-        Tela.info("Nome:      " + m.getNome());
-        Tela.info("Descrição: " + m.getDescricao());
-        Tela.info("Preço:     R$ " + String.format("%.2f", m.getPreco()));
-        Tela.info("Estoque:   " + m.getQuantidadeEstoque() + " | Mín: " + m.getQuantidadeMinima());
-        Tela.info("Validade:  " + m.getDataValidade());
-        Tela.info("Categoria: " + (m.getCategoria() != null ? m.getCategoria().getNome() : "—"));
-        Tela.info("Fornecedor:" + (m.getFornecedor() != null ? m.getFornecedor().getNome() : "—"));
-        Tela.info("Ativo:     " + (m.isAtivo() ? "Sim" : "Não"));
+        Tela.info("Nome:           " + m.getNome());
+        Tela.info("Descrição:      " + m.getDescricao());
+        Tela.info("Princípio ativo:" + m.getPrincipioAtivo());
+        Tela.info("Preço:          R$ " + String.format("%.2f", m.getPreco()));
+        Tela.info("Estoque:        " + m.getQuantidadeEstoque() + " | Mín: " + m.getQuantidadeMinima());
+        Tela.info("Validade:       " + m.getDataValidade());
+        Tela.info("Categoria:      " + (m.getCategoria() != null ? m.getCategoria().getNome() : "—"));
+        Tela.info("Fornecedor:     " + (m.getFornecedor() != null ? m.getFornecedor().getNome() : "—"));
+        Tela.info("Ativo:          " + (m.isAtivo() ? "Sim" : "Não"));
     }
 
     private String truncar(String s, int max) {

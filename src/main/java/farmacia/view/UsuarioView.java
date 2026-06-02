@@ -3,14 +3,8 @@ package farmacia.view;
 import farmacia.controller.UsuarioController;
 import farmacia.model.Administrador;
 import farmacia.model.Usuario;
-
 import java.util.List;
 
-/**
- * Telas de gerenciamento de usuários (somente Administrador).
- * Administradores são cadastrados diretamente no banco (usuarios.json).
- * Pela interface, o Administrador pode cadastrar, editar e remover Funcionários.
- */
 public class UsuarioView {
 
     private final Administrador admin;

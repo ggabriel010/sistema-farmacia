@@ -2,26 +2,25 @@ package farmacia.view;
 
 import farmacia.controller.ClienteController;
 import farmacia.controller.VendaController;
-import farmacia.model.Funcionario;
+import farmacia.model.Usuario;
 
 /**
  * Menu principal do Funcionário. Apenas registro de vendas.
  */
 public class MenuFuncionarioView {
 
-    private final Funcionario funcionario;
+    private final Usuario funcionario;
     private final VendaController vendaController;
     private final ClienteController clienteController;
 
-    public MenuFuncionarioView(Funcionario funcionario,
+    public MenuFuncionarioView(Usuario funcionario,
                                 VendaController vendaController) {
         this.funcionario = funcionario;
         this.vendaController = vendaController;
-        // Funcionário não tem ClienteController — venda avulsa ou informa ID
         this.clienteController = null;
     }
 
-    public MenuFuncionarioView(Funcionario funcionario,
+    public MenuFuncionarioView(Usuario funcionario,
                                 VendaController vendaController,
                                 ClienteController clienteController) {
         this.funcionario = funcionario;
@@ -33,7 +32,7 @@ public class MenuFuncionarioView {
         while (true) {
             Tela.cabecalho("MENU FUNCIONÁRIO — " + funcionario.getNome());
             System.out.println("  1. Registrar Venda");
-            System.out.println("  2. Listar Minhas Vendas");
+            System.out.println("  2. Listar Vendas");
             System.out.println("  0. Logout");
             Tela.separador();
 

@@ -19,25 +19,24 @@ public class LoginController {
     private final FornecedorController fornecedorController;
     private final ClienteController clienteController;
     private final VendaController vendaController;
+    private final UsuarioController usuarioController;
 
     public LoginController(AutenticacaoService autenticacaoService,
                            MedicamentoController medicamentoController,
                            CategoriaController categoriaController,
                            FornecedorController fornecedorController,
                            ClienteController clienteController,
-                           VendaController vendaController) {
+                           VendaController vendaController,
+                           UsuarioController usuarioController) {
         this.autenticacaoService = autenticacaoService;
         this.medicamentoController = medicamentoController;
         this.categoriaController = categoriaController;
         this.fornecedorController = fornecedorController;
         this.clienteController = clienteController;
         this.vendaController = vendaController;
+        this.usuarioController = usuarioController;
     }
 
-    /**
-     * Exibe a tela de login e, após autenticação, redireciona para o menu correto.
-     * Retorna quando o usuário faz logout.
-     */
     public void iniciar() {
         LoginView loginView = new LoginView();
 
@@ -57,12 +56,13 @@ public class LoginController {
                             categoriaController,
                             fornecedorController,
                             clienteController,
-                            vendaController
+                            vendaController,
+                            usuarioController
                     );
                     menuAdmin.exibir();
                 } else if (usuario instanceof Funcionario) {
                     MenuFuncionarioView menuFuncionario = new MenuFuncionarioView(
-                            (Funcionario) usuario,
+                            usuario,
                             vendaController
                     );
                     menuFuncionario.exibir();
@@ -72,7 +72,6 @@ public class LoginController {
                 loginView.exibirErro(e.getMessage());
             }
 
-            // Após logout, pergunta se quer entrar novamente ou sair do sistema
             if (!loginView.confirmarNovoLogin()) {
                 break;
             }

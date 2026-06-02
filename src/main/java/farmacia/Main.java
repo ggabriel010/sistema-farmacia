@@ -7,28 +7,20 @@ import farmacia.view.AlertaView;
 
 /**
  * Ponto de entrada do Sistema de Gerenciamento de Farmácia.
- *
- * <p>Ordem de inicialização:</p>
- * <ol>
- *   <li>Instancia Repositories</li>
- *   <li>Instancia Services</li>
- *   <li>Instancia Controllers</li>
- *   <li>Exibe alertas de estoque/validade</li>
- *   <li>Abre a tela de login</li>
- * </ol>
  */
 public class Main {
 
     public static void main(String[] args) {
 
         // ── Repositories ──────────────────────────────────────────────────
-        CategoriaRepository  categoriaRepo  = new CategoriaRepository();
-        FornecedorRepository fornecedorRepo = new FornecedorRepository();
-        ClienteRepository    clienteRepo    = new ClienteRepository();
-        UsuarioRepository    usuarioRepo    = new UsuarioRepository();
+        CategoriaRepository   categoriaRepo   = new CategoriaRepository();
+        FornecedorRepository  fornecedorRepo  = new FornecedorRepository();
+        ClienteRepository     clienteRepo     = new ClienteRepository();
+        UsuarioRepository     usuarioRepo     = new UsuarioRepository();
         MedicamentoRepository medicamentoRepo =
                 new MedicamentoRepository(categoriaRepo, fornecedorRepo);
-        VendaRepository vendaRepo = new VendaRepository(usuarioRepo, clienteRepo, medicamentoRepo);
+        VendaRepository vendaRepo =
+                new VendaRepository(usuarioRepo, clienteRepo, medicamentoRepo);
 
         // ── Services ──────────────────────────────────────────────────────
         AutenticacaoService autenticacaoService = new AutenticacaoService(usuarioRepo);
@@ -37,6 +29,7 @@ public class Main {
                 vendaRepo, medicamentoRepo, clienteRepo, estoqueService);
 
         // ── Controllers ───────────────────────────────────────────────────
+        UsuarioController    usuarioController    = new UsuarioController(usuarioRepo);
         MedicamentoController medicamentoController =
                 new MedicamentoController(medicamentoRepo, categoriaRepo, fornecedorRepo);
         CategoriaController  categoriaController  = new CategoriaController(categoriaRepo);
@@ -50,7 +43,8 @@ public class Main {
                 categoriaController,
                 fornecedorController,
                 clienteController,
-                vendaController
+                vendaController,
+                usuarioController
         );
 
         // ── Alertas ao iniciar ────────────────────────────────────────────

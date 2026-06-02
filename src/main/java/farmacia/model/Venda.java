@@ -6,7 +6,7 @@ import java.util.List;
 public class Venda {
 
     private String id;
-    private String dataHora;   // formato ISO: "2025-06-01T14:30:00"
+    private String dataHora;
     private Funcionario funcionario;
     private Cliente cliente;
     private List<ItemVenda> itens;

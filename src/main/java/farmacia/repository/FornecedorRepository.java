@@ -2,13 +2,9 @@ package farmacia.repository;
 
 import farmacia.model.Fornecedor;
 import farmacia.util.JsonUtil;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Persiste objetos {@link Fornecedor} no arquivo {@code dados/fornecedores.json}.
- */
 public class FornecedorRepository extends AbstractRepository<Fornecedor> {
 
     public FornecedorRepository() {

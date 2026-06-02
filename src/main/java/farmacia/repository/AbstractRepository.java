@@ -1,22 +1,16 @@
 package farmacia.repository;
 
 import farmacia.util.JsonUtil;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
 
-/**
- * Implementação base para todos os Repositories.
- * Cuida de leitura e escrita no arquivo JSON, deixando
- * apenas a conversão objeto<->Map para as subclasses.
- *
- * @param <T> tipo da entidade
- */
+
+ 
 public abstract class AbstractRepository<T> implements Repository<T> {
 
-    /** Pasta onde todos os arquivos JSON são armazenados. */
+
     private static final String PASTA_DADOS = "dados";
 
     private final Path arquivoJson;
@@ -31,23 +25,14 @@ public abstract class AbstractRepository<T> implements Repository<T> {
         this.arquivoJson = pasta.resolve(nomeArquivo);
     }
 
-    // ------------------------------------------------------------------ //
-    //  CONTRATO DAS SUBCLASSES
-    // ------------------------------------------------------------------ //
 
-    /** Serializa o objeto para um Map que será gravado no JSON. */
     protected abstract Map<String, Object> toMap(T objeto);
 
-    /** Desserializa um Map lido do JSON para o objeto do domínio. */
     protected abstract T fromMap(Map<String, Object> map);
 
-    /** Retorna o id único do objeto (campo "id" por padrão). */
     protected abstract String getId(T objeto);
 
-    // ------------------------------------------------------------------ //
-    //  IMPLEMENTAÇÃO DA INTERFACE Repository<T>
-    // ------------------------------------------------------------------ //
-
+   
     @Override
     public void salvar(T objeto) {
         List<Map<String, Object>> lista = lerArquivo();
@@ -102,12 +87,7 @@ public abstract class AbstractRepository<T> implements Repository<T> {
         escreverArquivo(lista);
     }
 
-    // ------------------------------------------------------------------ //
-    //  LEITURA E ESCRITA NO ARQUIVO
-    // ------------------------------------------------------------------ //
-
-    /** Lê o arquivo JSON e retorna a lista de maps. */
-    protected List<Map<String, Object>> lerArquivo() {
+       protected List<Map<String, Object>> lerArquivo() {
         if (!Files.exists(arquivoJson)) return new ArrayList<>();
         try (BufferedReader reader = Files.newBufferedReader(arquivoJson, StandardCharsets.UTF_8)) {
             StringBuilder sb = new StringBuilder();
@@ -121,7 +101,7 @@ public abstract class AbstractRepository<T> implements Repository<T> {
         }
     }
 
-    /** Grava a lista de maps no arquivo JSON (sobrescreve). */
+
     private void escreverArquivo(List<Map<String, Object>> lista) {
         try (BufferedWriter writer = Files.newBufferedWriter(arquivoJson, StandardCharsets.UTF_8)) {
             writer.write(serializarLista(lista));
@@ -130,7 +110,6 @@ public abstract class AbstractRepository<T> implements Repository<T> {
         }
     }
 
-    /** Gera o JSON com indentação simples para facilitar leitura. */
     private String serializarLista(List<Map<String, Object>> lista) {
         StringBuilder sb = new StringBuilder("[\n");
         for (int i = 0; i < lista.size(); i++) {

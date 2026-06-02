@@ -2,30 +2,9 @@ package farmacia.repository;
 
 import farmacia.model.*;
 import farmacia.util.JsonUtil;
-
 import java.util.*;
 
-/**
- * Persiste objetos {@link Venda} no arquivo {@code dados/vendas.json}.
- *
- * <p>Estrutura JSON de uma venda:</p>
- * <pre>
- * {
- *   "id": "...",
- *   "dataHora": "2025-06-01T14:30:00",
- *   "funcionarioId": "...",
- *   "clienteId": "...",          // pode ser null em venda avulsa
- *   "itens": [
- *     {
- *       "id": "...",
- *       "medicamentoId": "...",
- *       "quantidade": 2,
- *       "precoUnitario": 12.50
- *     }
- *   ]
- * }
- * </pre>
- */
+
 public class VendaRepository extends AbstractRepository<Venda> {
 
     private final UsuarioRepository usuarioRepo;
@@ -41,15 +20,12 @@ public class VendaRepository extends AbstractRepository<Venda> {
         this.medicamentoRepo = medicamentoRepo;
     }
 
-    // ------------------------------------------------------------------ //
-    //  SERIALIZAÇÃO
-    // ------------------------------------------------------------------ //
 
     @Override
     protected Map<String, Object> toMap(Venda v) {
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("id", v.getId());
-        map.put("dataHora", v.getDataHora());   // String ISO
+        map.put("dataHora", v.getDataHora());  
         map.put("funcionarioId", v.getFuncionario() != null ? v.getFuncionario().getId() : null);
         map.put("clienteId", v.getCliente() != null ? v.getCliente().getId() : null);
         map.put("itens", serializarItens(v.getItens()));
@@ -69,10 +45,6 @@ public class VendaRepository extends AbstractRepository<Venda> {
         }
         return lista;
     }
-
-    // ------------------------------------------------------------------ //
-    //  DESSERIALIZAÇÃO
-    // ------------------------------------------------------------------ //
 
     @Override
     protected Venda fromMap(Map<String, Object> map) {
@@ -119,11 +91,6 @@ public class VendaRepository extends AbstractRepository<Venda> {
         return objeto.getId();
     }
 
-    // ------------------------------------------------------------------ //
-    //  CONSULTAS EXTRAS
-    // ------------------------------------------------------------------ //
-
-    /** Retorna todas as vendas de um determinado funcionário. */
     public List<Venda> buscarPorFuncionario(String funcionarioId) {
         List<Venda> resultado = new ArrayList<>();
         for (Venda v : listarTodos()) {
@@ -134,7 +101,6 @@ public class VendaRepository extends AbstractRepository<Venda> {
         return resultado;
     }
 
-    /** Retorna todas as vendas de um determinado cliente. */
     public List<Venda> buscarPorCliente(String clienteId) {
         List<Venda> resultado = new ArrayList<>();
         for (Venda v : listarTodos()) {

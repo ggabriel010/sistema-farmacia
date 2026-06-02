@@ -5,34 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Parser e serializador JSON minimalista, sem dependências externas.
- *
- * Suporta:
- *   - Objetos  { "chave": valor, ... }
- *   - Arrays   [ valor, valor, ... ]
- *   - Strings  "texto"
- *   - Números  inteiros e decimais
- *   - Booleanos true / false
- *   - null
- *
- * Uso:
- *   Map<String,Object> obj = JsonUtil.parseObject(jsonString);
- *   String json = JsonUtil.toJson(objeto);
- */
+
 public final class JsonUtil {
 
     private JsonUtil() {}
 
-    // ------------------------------------------------------------------ //
-    //  PARSE
-    // ------------------------------------------------------------------ //
-
-    /**
-     * Converte uma String JSON de objeto em Map<String, Object>.
-     * Arrays internos viram List<Object>.
-     * Objetos internos viram Map<String, Object>.
-     */
     @SuppressWarnings("unchecked")
     public static Map<String, Object> parseObject(String json) {
         if (json == null || json.isBlank()) return new LinkedHashMap<>();
@@ -41,9 +18,7 @@ public final class JsonUtil {
         return new LinkedHashMap<>();
     }
 
-    /**
-     * Converte uma String JSON de array em List<Object>.
-     */
+   
     @SuppressWarnings("unchecked")
     public static List<Object> parseArray(String json) {
         if (json == null || json.isBlank()) return new ArrayList<>();
@@ -52,7 +27,6 @@ public final class JsonUtil {
         return new ArrayList<>();
     }
 
-    /** Converte List<Map> diretamente (atalho para listarTodos). */
     @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> parseObjectArray(String json) {
         List<Object> raw = parseArray(json);
@@ -62,20 +36,13 @@ public final class JsonUtil {
         }
         return result;
     }
-
-    // ------------------------------------------------------------------ //
-    //  SERIALIZE
-    // ------------------------------------------------------------------ //
-
-    /** Serializa qualquer valor Java suportado em String JSON. */
     public static String toJson(Object value) {
         if (value == null) return "null";
         if (value instanceof String) return "\"" + escapeString((String) value) + "\"";
         if (value instanceof Boolean || value instanceof Number) return value.toString();
         if (value instanceof Map) return mapToJson((Map<?, ?>) value);
         if (value instanceof List) return listToJson((List<?>) value);
-        // fallback: tratar como string
-        return "\"" + escapeString(value.toString()) + "\"";
+            return "\"" + escapeString(value.toString()) + "\"";
     }
 
     private static String mapToJson(Map<?, ?> map) {
@@ -110,10 +77,6 @@ public final class JsonUtil {
                 .replace("\r", "\\r")
                 .replace("\t", "\\t");
     }
-
-    // ------------------------------------------------------------------ //
-    //  HELPERS de acesso
-    // ------------------------------------------------------------------ //
 
     public static String getString(Map<String, Object> map, String key) {
         Object v = map.get(key);
@@ -160,14 +123,7 @@ public final class JsonUtil {
         return result;
     }
 
-    // ------------------------------------------------------------------ //
-    //  PARSER INTERNO
-    // ------------------------------------------------------------------ //
-
-    /**
-     * Analisa recursivamente um valor JSON a partir da posição pos[0].
-     * Avança pos[0] até o fim do valor lido.
-     */
+   
     private static Object parseValue(String json, int[] pos) {
         skipWhitespace(json, pos);
         if (pos[0] >= json.length()) return null;
@@ -185,7 +141,7 @@ public final class JsonUtil {
 
     private static Map<String, Object> parseObjectInternal(String json, int[] pos) {
         Map<String, Object> map = new LinkedHashMap<>();
-        pos[0]++; // consome '{'
+        pos[0]++; 
         skipWhitespace(json, pos);
         if (pos[0] < json.length() && json.charAt(pos[0]) == '}') { pos[0]++; return map; }
 
@@ -193,7 +149,7 @@ public final class JsonUtil {
             skipWhitespace(json, pos);
             String key = parseString(json, pos);
             skipWhitespace(json, pos);
-            pos[0]++; // consome ':'
+            pos[0]++; 
             Object value = parseValue(json, pos);
             map.put(key, value);
             skipWhitespace(json, pos);
@@ -207,7 +163,7 @@ public final class JsonUtil {
 
     private static List<Object> parseArrayInternal(String json, int[] pos) {
         List<Object> list = new ArrayList<>();
-        pos[0]++; // consome '['
+        pos[0]++; 
         skipWhitespace(json, pos);
         if (pos[0] < json.length() && json.charAt(pos[0]) == ']') { pos[0]++; return list; }
 
@@ -223,7 +179,7 @@ public final class JsonUtil {
     }
 
     private static String parseString(String json, int[] pos) {
-        pos[0]++; // consome '"'
+        pos[0]++; 
         StringBuilder sb = new StringBuilder();
         while (pos[0] < json.length()) {
             char c = json.charAt(pos[0]);

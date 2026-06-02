@@ -2,13 +2,9 @@ package farmacia.repository;
 
 import farmacia.model.Cliente;
 import farmacia.util.JsonUtil;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Persiste objetos {@link Cliente} no arquivo {@code dados/clientes.json}.
- */
 public class ClienteRepository extends AbstractRepository<Cliente> {
 
     public ClienteRepository() {
@@ -42,7 +38,6 @@ public class ClienteRepository extends AbstractRepository<Cliente> {
         return objeto.getId();
     }
 
-    /** Busca cliente pelo CPF. Retorna null se não encontrado. */
     public Cliente buscarPorCpf(String cpf) {
         for (Cliente c : listarTodos()) {
             if (cpf.equals(c.getCpf())) return c;

@@ -2,13 +2,9 @@ package farmacia.repository;
 
 import farmacia.model.Categoria;
 import farmacia.util.JsonUtil;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Persiste objetos {@link Categoria} no arquivo {@code dados/categorias.json}.
- */
 public class CategoriaRepository extends AbstractRepository<Categoria> {
 
     public CategoriaRepository() {

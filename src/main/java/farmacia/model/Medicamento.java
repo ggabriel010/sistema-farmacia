@@ -1,17 +1,18 @@
 package farmacia.model;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
 
 public class Medicamento {
 
     private String id;
     private String nome;
     private String descricao;
+    private String principioAtivo;
     private double preco;
     private int quantidadeEstoque;
     private int quantidadeMinima;
-    private String dataValidade;   // formato ISO: "2025-12-31"
+    private String dataValidade;
     private boolean ativo;
     private Categoria categoria;
     private Fornecedor fornecedor;
@@ -20,12 +21,13 @@ public class Medicamento {
         this.ativo = true;
     }
 
-    public Medicamento(String id, String nome, String descricao, double preco,
-                       int quantidadeEstoque, int quantidadeMinima,
+    public Medicamento(String id, String nome, String descricao, String principioAtivo,
+                       double preco, int quantidadeEstoque, int quantidadeMinima,
                        String dataValidade, Categoria categoria, Fornecedor fornecedor) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
+        this.principioAtivo = principioAtivo;
         this.preco = preco;
         this.quantidadeEstoque = quantidadeEstoque;
         this.quantidadeMinima = quantidadeMinima;
@@ -38,6 +40,7 @@ public class Medicamento {
     public String getId() { return id; }
     public String getNome() { return nome; }
     public String getDescricao() { return descricao; }
+    public String getPrincipioAtivo() { return principioAtivo; }
     public double getPreco() { return preco; }
     public int getQuantidadeEstoque() { return quantidadeEstoque; }
     public int getQuantidadeMinima() { return quantidadeMinima; }
@@ -49,6 +52,7 @@ public class Medicamento {
     public void setId(String id) { this.id = id; }
     public void setNome(String nome) { this.nome = nome; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
+    public void setPrincipioAtivo(String principioAtivo) { this.principioAtivo = principioAtivo; }
     public void setPreco(double preco) { this.preco = preco; }
     public void setQuantidadeEstoque(int quantidadeEstoque) { this.quantidadeEstoque = quantidadeEstoque; }
     public void setQuantidadeMinima(int quantidadeMinima) { this.quantidadeMinima = quantidadeMinima; }
@@ -65,11 +69,6 @@ public class Medicamento {
         return quantidadeEstoque < quantidadeMinima;
     }
 
-    /**
-     * Retorna true se a validade for igual ou inferior a 30 dias a partir de hoje.
-     * Converte a data armazenada como String (ISO) para LocalDate internamente.
-     * Se a data for inválida ou nula, retorna false.
-     */
     public boolean isValidadeProxima() {
         if (dataValidade == null || dataValidade.isBlank()) return false;
         try {

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "adm-001",
+    "nome": "Karllos",
+    "login": "karllos",
+    "senha": "12345678",
+    "perfil": "ADMINISTRADOR"
+  },
+  {
+    "id": "adm-002",
+    "nome": "Gabriel",
+    "login": "gabriel",
+    "senha": "12345678",
+    "perfil": "ADMINISTRADOR"
+  },
+  {
+    "id": "adm-003",
+    "nome": "Valderi",
+    "login": "valderi",
+    "senha": "12345678",
+    "perfil": "ADMINISTRADOR"
+  }
+]

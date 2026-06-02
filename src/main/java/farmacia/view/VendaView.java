@@ -3,9 +3,9 @@ package farmacia.view;
 import farmacia.controller.ClienteController;
 import farmacia.controller.VendaController;
 import farmacia.model.Cliente;
-import farmacia.model.Funcionario;
 import farmacia.model.ItemVenda;
 import farmacia.model.Medicamento;
+import farmacia.model.Usuario;
 import farmacia.model.Venda;
 import farmacia.service.VendaService.ItemVendaDto;
 
@@ -14,15 +14,15 @@ import java.util.List;
 
 /**
  * Tela de registro e listagem de vendas.
- * Usada tanto por Funcionário quanto por Administrador (que também é Funcionario no fluxo de venda).
+ * Usada tanto por Funcionário quanto por Administrador.
  */
 public class VendaView {
 
-    private final Funcionario funcionario;
+    private final Usuario funcionario;
     private final VendaController vendaController;
-    private final ClienteController clienteController; // pode ser null para Funcionário simples
+    private final ClienteController clienteController;
 
-    public VendaView(Funcionario funcionario,
+    public VendaView(Usuario funcionario,
                      VendaController vendaController,
                      ClienteController clienteController) {
         this.funcionario = funcionario;
@@ -30,13 +30,9 @@ public class VendaView {
         this.clienteController = clienteController;
     }
 
-    /**
-     * Fluxo completo de registro de uma venda.
-     */
     public void registrarVenda() {
         Tela.cabecalho("REGISTRAR VENDA");
 
-        // 1. Verificar se há medicamentos disponíveis
         List<Medicamento> disponiveis = vendaController.listarMedicamentosDisponiveis();
         if (disponiveis.isEmpty()) {
             Tela.aviso("Nenhum medicamento disponível para venda no momento.");
@@ -44,36 +40,29 @@ public class VendaView {
             return;
         }
 
-        // 2. Vincular cliente (opcional)
         String clienteId = selecionarCliente();
 
-        // 3. Montar os itens da venda
         List<ItemVendaDto> itens = new ArrayList<>();
         boolean adicionandoItens = true;
 
         while (adicionandoItens) {
             exibirMedicamentosDisponiveis(disponiveis);
 
-            String medId = Tela.lerLinhaObrigatoria("ID do medicamento (ou ENTER para finalizar)");
+            String medId = Tela.lerLinhaObrigatoria("ID do medicamento");
 
-            // Permite finalizar digitando qualquer coisa que não seja um ID válido,
-            // mas damos opção explícita de sair após cada item
             Medicamento medSelecionado = encontrarMedicamento(disponiveis, medId);
             if (medSelecionado == null) {
                 Tela.erro("Medicamento não encontrado ou indisponível.");
                 Tela.pausar();
-                // Perguntar se quer tentar de novo
                 if (!Tela.confirmar("Deseja adicionar outro medicamento?")) {
                     adicionandoItens = false;
                 }
                 continue;
             }
 
-            // Quantidade
             int quantidade = lerQuantidade(medSelecionado);
             if (quantidade <= 0) continue;
 
-            // Verificar estoque antes de adicionar
             if (!vendaController.verificarEstoque(medSelecionado.getId(), quantidade)) {
                 Tela.erro("Estoque insuficiente. Disponível: " + medSelecionado.getQuantidadeEstoque());
                 Tela.pausar();
@@ -94,7 +83,6 @@ public class VendaView {
             return;
         }
 
-        // 4. Confirmar a venda
         System.out.println();
         exibirResumoItens(itens, disponiveis);
         if (!Tela.confirmar("Confirmar a venda?")) {
@@ -103,7 +91,6 @@ public class VendaView {
             return;
         }
 
-        // 5. Registrar
         try {
             Venda venda = vendaController.registrarVenda(funcionario, clienteId, itens);
             Tela.sucesso("Venda registrada com sucesso!");
@@ -114,9 +101,6 @@ public class VendaView {
         Tela.pausar();
     }
 
-    /**
-     * Lista todas as vendas registradas.
-     */
     public void listarVendas() {
         Tela.cabecalho("VENDAS REGISTRADAS");
         List<Venda> vendas = vendaController.listarVendas();

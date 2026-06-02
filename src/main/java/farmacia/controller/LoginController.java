@@ -8,9 +8,6 @@ import farmacia.view.LoginView;
 import farmacia.view.MenuAdminView;
 import farmacia.view.MenuFuncionarioView;
 
-/**
- * Controla o fluxo de login e redirecionamento por perfil.
- */
 public class LoginController {
 
     private final AutenticacaoService autenticacaoService;

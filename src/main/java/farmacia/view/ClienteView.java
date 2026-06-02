@@ -3,12 +3,8 @@ package farmacia.view;
 import farmacia.controller.ClienteController;
 import farmacia.model.Administrador;
 import farmacia.model.Cliente;
-
 import java.util.List;
 
-/**
- * Telas de gerenciamento de clientes (somente Administrador).
- */
 public class ClienteView {
 
     private final Administrador admin;

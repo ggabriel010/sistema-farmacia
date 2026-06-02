@@ -3,13 +3,9 @@ package farmacia.controller;
 import farmacia.model.Administrador;
 import farmacia.model.Categoria;
 import farmacia.repository.CategoriaRepository;
-
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Controla as operações sobre categorias. Apenas Administrador.
- */
 public class CategoriaController {
 
     private final CategoriaRepository categoriaRepository;

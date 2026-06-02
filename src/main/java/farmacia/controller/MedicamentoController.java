@@ -7,15 +7,11 @@ import farmacia.model.Medicamento;
 import farmacia.repository.CategoriaRepository;
 import farmacia.repository.FornecedorRepository;
 import farmacia.repository.MedicamentoRepository;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Controla as operações sobre medicamentos (apenas Administrador pode cadastrar/editar/desativar).
- */
 public class MedicamentoController {
 
     private final MedicamentoRepository medicamentoRepository;
@@ -30,17 +26,14 @@ public class MedicamentoController {
         this.fornecedorRepository = fornecedorRepository;
     }
 
-    /** Retorna todos os medicamentos cadastrados. */
     public List<Medicamento> listarTodos() {
         return medicamentoRepository.listarTodos();
     }
 
-    /** Retorna apenas os medicamentos ativos. */
     public List<Medicamento> listarAtivos() {
         return medicamentoRepository.listarAtivos();
     }
 
-    /** Busca medicamento por nome (parcial, ignora maiúsculas). */
     public List<Medicamento> buscarPorNome(String nome) {
         if (nome == null || nome.isBlank()) {
             throw new IllegalArgumentException("Nome de busca não pode ser vazio.");
@@ -48,7 +41,6 @@ public class MedicamentoController {
         return medicamentoRepository.buscarPorNome(nome);
     }
 
-    /** Busca medicamento por id. Retorna null se não encontrado. */
     public Medicamento buscarPorId(String id) {
         if (id == null || id.isBlank()) {
             throw new IllegalArgumentException("ID não pode ser vazio.");
@@ -56,25 +48,14 @@ public class MedicamentoController {
         return medicamentoRepository.buscarPorId(id);
     }
 
-    /**
-     * Cadastra um novo medicamento. Apenas Administrador.
-     *
-     * @param solicitante   usuário logado
-     * @param nome          nome do medicamento
-     * @param descricao     descrição
-     * @param precoStr      preço em formato texto (ex: "12.50")
-     * @param qtdEstoqueStr quantidade em estoque (texto)
-     * @param qtdMinimaStr  quantidade mínima (texto)
-     * @param dataValidadeStr data de validade no formato "yyyy-MM-dd"
-     * @param categoriaId   id da categoria
-     * @param fornecedorId  id do fornecedor
-     */
     public void cadastrar(Administrador solicitante, String nome, String descricao,
-                          String precoStr, String qtdEstoqueStr, String qtdMinimaStr,
-                          String dataValidadeStr, String categoriaId, String fornecedorId) {
+                          String principioAtivo, String precoStr, String qtdEstoqueStr,
+                          String qtdMinimaStr, String dataValidadeStr,
+                          String categoriaId, String fornecedorId) {
 
         validarCampoObrigatorio(nome, "Nome");
         validarCampoObrigatorio(descricao, "Descrição");
+        validarCampoObrigatorio(principioAtivo, "Princípio ativo");
         validarCampoObrigatorio(precoStr, "Preço");
         validarCampoObrigatorio(qtdEstoqueStr, "Quantidade em estoque");
         validarCampoObrigatorio(qtdMinimaStr, "Quantidade mínima");
@@ -97,6 +78,7 @@ public class MedicamentoController {
         med.setId(UUID.randomUUID().toString());
         med.setNome(nome.trim());
         med.setDescricao(descricao.trim());
+        med.setPrincipioAtivo(principioAtivo.trim());
         med.setPreco(preco);
         med.setQuantidadeEstoque(qtdEstoque);
         med.setQuantidadeMinima(qtdMinima);
@@ -108,23 +90,22 @@ public class MedicamentoController {
         medicamentoRepository.salvar(med);
     }
 
-    /**
-     * Edita os dados de um medicamento existente. Apenas Administrador.
-     */
     public void editar(Administrador solicitante, String id, String nome, String descricao,
-                       String precoStr, String qtdEstoqueStr, String qtdMinimaStr,
-                       String dataValidadeStr, String categoriaId, String fornecedorId) {
+                       String principioAtivo, String precoStr, String qtdEstoqueStr,
+                       String qtdMinimaStr, String dataValidadeStr,
+                       String categoriaId, String fornecedorId) {
 
         Medicamento med = medicamentoRepository.buscarPorId(id);
         if (med == null) throw new IllegalArgumentException("Medicamento não encontrado.");
 
         if (nome != null && !nome.isBlank()) med.setNome(nome.trim());
         if (descricao != null && !descricao.isBlank()) med.setDescricao(descricao.trim());
+        if (principioAtivo != null && !principioAtivo.isBlank()) med.setPrincipioAtivo(principioAtivo.trim());
         if (precoStr != null && !precoStr.isBlank()) med.setPreco(parseDouble(precoStr, "Preço"));
         if (qtdEstoqueStr != null && !qtdEstoqueStr.isBlank()) med.setQuantidadeEstoque(parseInt(qtdEstoqueStr, "Quantidade em estoque"));
         if (qtdMinimaStr != null && !qtdMinimaStr.isBlank()) med.setQuantidadeMinima(parseInt(qtdMinimaStr, "Quantidade mínima"));
         if (dataValidadeStr != null && !dataValidadeStr.isBlank()) {
-            parseData(dataValidadeStr); // valida formato
+            parseData(dataValidadeStr);
             med.setDataValidade(dataValidadeStr.trim());
         }
         if (categoriaId != null && !categoriaId.isBlank()) {
@@ -141,9 +122,6 @@ public class MedicamentoController {
         medicamentoRepository.atualizar(med);
     }
 
-    /**
-     * Desativa um medicamento (não remove, apenas marca como inativo). Apenas Administrador.
-     */
     public void desativar(Administrador solicitante, String id) {
         Medicamento med = medicamentoRepository.buscarPorId(id);
         if (med == null) throw new IllegalArgumentException("Medicamento não encontrado.");
@@ -151,8 +129,6 @@ public class MedicamentoController {
         med.setAtivo(false);
         medicamentoRepository.atualizar(med);
     }
-
-    // ---- auxiliares ----
 
     private void validarCampoObrigatorio(String valor, String campo) {
         if (valor == null || valor.isBlank()) {

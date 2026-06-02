@@ -8,14 +8,9 @@ import farmacia.model.Medicamento;
 import farmacia.model.Usuario;
 import farmacia.model.Venda;
 import farmacia.service.VendaService.ItemVendaDto;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Tela de registro e listagem de vendas.
- * Usada tanto por Funcionário quanto por Administrador.
- */
 public class VendaView {
 
     private final Usuario funcionario;
@@ -122,8 +117,6 @@ public class VendaView {
         }
         Tela.pausar();
     }
-
-    // ---- auxiliares ----
 
     private String selecionarCliente() {
         if (!Tela.confirmar("Vincular esta venda a um cliente cadastrado?")) {

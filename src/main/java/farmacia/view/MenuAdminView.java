@@ -3,9 +3,6 @@ package farmacia.view;
 import farmacia.controller.*;
 import farmacia.model.Administrador;
 
-/**
- * Menu principal do Administrador.
- */
 public class MenuAdminView {
 
     private final Administrador admin;

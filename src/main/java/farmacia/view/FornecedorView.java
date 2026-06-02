@@ -3,12 +3,8 @@ package farmacia.view;
 import farmacia.controller.FornecedorController;
 import farmacia.model.Administrador;
 import farmacia.model.Fornecedor;
-
 import java.util.List;
 
-/**
- * Telas de gerenciamento de fornecedores (somente Administrador).
- */
 public class FornecedorView {
 
     private final Administrador admin;

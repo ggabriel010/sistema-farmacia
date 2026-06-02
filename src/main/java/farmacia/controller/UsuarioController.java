@@ -4,15 +4,9 @@ import farmacia.model.Administrador;
 import farmacia.model.Funcionario;
 import farmacia.model.Usuario;
 import farmacia.repository.UsuarioRepository;
-
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Controla o cadastro e gerenciamento de usuários.
- * Apenas Administrador pode cadastrar, editar e remover usuários.
- * Administradores são inseridos diretamente no banco (usuarios.json).
- */
 public class UsuarioController {
 
     private final UsuarioRepository usuarioRepository;
@@ -21,25 +15,15 @@ public class UsuarioController {
         this.usuarioRepository = usuarioRepository;
     }
 
-    /** Lista todos os usuários cadastrados. */
     public List<Usuario> listarTodos() {
         return usuarioRepository.listarTodos();
     }
 
-    /** Busca usuário por id. Retorna null se não encontrado. */
     public Usuario buscarPorId(String id) {
         if (id == null || id.isBlank()) throw new IllegalArgumentException("ID não pode ser vazio.");
         return usuarioRepository.buscarPorId(id);
     }
 
-    /**
-     * Cadastra um novo Funcionário. Apenas Administrador pode fazer isso.
-     *
-     * @param solicitante adm logado
-     * @param nome        nome completo
-     * @param login       login de acesso
-     * @param senha       senha
-     */
     public void cadastrarFuncionario(Administrador solicitante, String nome, String login, String senha) {
         validarCampo(nome, "Nome");
         validarCampo(login, "Login");
@@ -58,10 +42,6 @@ public class UsuarioController {
         usuarioRepository.salvar(func);
     }
 
-    /**
-     * Edita os dados de um usuário existente. Apenas Administrador.
-     * Campos em branco mantêm o valor atual.
-     */
     public void editar(Administrador solicitante, String id, String nome, String login, String senha) {
         Usuario usuario = usuarioRepository.buscarPorId(id);
         if (usuario == null) throw new IllegalArgumentException("Usuário não encontrado.");
@@ -81,9 +61,6 @@ public class UsuarioController {
         usuarioRepository.atualizar(usuario);
     }
 
-    /**
-     * Remove um usuário. Administrador não pode remover a si mesmo.
-     */
     public void remover(Administrador solicitante, String id) {
         if (solicitante.getId().equals(id)) {
             throw new IllegalArgumentException("Você não pode remover sua própria conta.");
@@ -92,8 +69,6 @@ public class UsuarioController {
         if (usuario == null) throw new IllegalArgumentException("Usuário não encontrado.");
         usuarioRepository.remover(id);
     }
-
-    // ---- auxiliares ----
 
     private void validarCampo(String valor, String campo) {
         if (valor == null || valor.isBlank()) {

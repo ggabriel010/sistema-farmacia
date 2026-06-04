@@ -1,0 +1,7 @@
+/out/
+/dados/medicamentos.json
+/dados/categorias.json
+/dados/fornecedores.json
+/dados/clientes.json
+/dados/vendas.json
+*.class
